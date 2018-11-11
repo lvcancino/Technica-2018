@@ -2,7 +2,7 @@
   "name": "SmartSurfing",
   "version": "1.0",
   "description": "Chrome Extension for Browsing Data Management",
-  "permissions": ["history", "activeTab", "declarativeContent", "storage"],
+  "permissions": ["history", "activeTab", "declarativeContent", "storage", "tabs"],
   "content_security_policy": "script-src 'self' https://www.gstatic.com; object-src 'self'",
   "background": {
     "scripts": ["background.js"],

@@ -3,7 +3,7 @@
 google.charts.load('current', {packages:['corechart']});
 google.charts.setOnLoadCallback(onLoad);
 
-function setTableData(orderedSiteHits) {
+function setVisitTableData(orderedSiteHits) {
     var tbody = document.getElementById('siteVisits');
     tbody.innerHTML = '';
 
@@ -18,8 +18,7 @@ function setTableData(orderedSiteHits) {
     }
 }
 
-function drawChart(orderedSiteHits) {
-    console.log(orderedSiteHits);
+function drawVisitChart(orderedSiteHits) {
     var dataTable = google.visualization.arrayToDataTable(orderedSiteHits);
 
     var options = {
@@ -55,7 +54,7 @@ function drawChart(orderedSiteHits) {
     chart.draw(dataTable, options);
 }
 
-function processData(data) {
+function processVisitData(data) {
     var siteHits = new Object();
     for(var hit in data) {
         var link = document.createElement("a")
@@ -82,37 +81,138 @@ function processData(data) {
         return a[1] - b[1];
     });
 
-    setTableData(orderedSiteHits);
+    setVisitTableData(orderedSiteHits);
     orderedSiteHits.unshift(['Site', 'Number of Visits']);
-    drawChart(orderedSiteHits);
+    drawVisitChart(orderedSiteHits);
 }
 
-function renderData(days) {
+function renderVisitData(days) {
     // On load
     var millisInADay = 6 * 60 * 60 * 1000;
     var startTime =  Date.now() - (millisInADay * days);
     chrome.history.search({text: '', startTime: startTime, maxResults: 2000}, function(data) {
-        processData(data);
+        processVisitData(data);
     });
 }
+
+/////////////////////////////////////////////////////////////////////////
+
+function setTimeTableData(orderedSiteTimes) {
+    console.log(orderedSiteTimes);
+    var tbody = document.getElementById('siteTimes');
+    tbody.innerHTML = '';
+
+    for (var i = orderedSiteTimes.length - 1; i >= 0; i-- ) {
+        var tr = "<tr>";
+        var minutes = Math.round((orderedSiteTimes[i][1]) / (1000*60));
+
+        /* Must not forget the $ sign */
+        tr += "<td>" + orderedSiteTimes[i][0] + "</td>" + "<td>" + minutes + "</td></tr>";
+
+        /* We add the table row to the table body */
+        tbody.innerHTML += tr;
+    }
+}
+
+function drawTimeChart(orderedSiteTimes) {
+    var dataTable = google.visualization.arrayToDataTable(orderedSiteTimes);
+
+    var options = {
+        title: 'Your Web Browsing Activity',
+        titleTextStyle: {
+            color: '#5d545f',
+            fontName: 'Cutive Mono',
+            fontSize: 20
+        },
+        chartArea: {
+            left: 10,
+            top:0,
+            width:'90%',
+            height:'90%'
+        },
+        pieHole: 0.4,
+        sliceVisibilityThreshold: .005,
+        backgroundColor: '#e9ecef',
+        tooltip: {
+            trigger: 'focus',
+            textStyle: {
+                color: '#5d545f',
+                fontName: 'Cutive Mono',
+                fontSize: 16
+            }
+        },
+        legend: {
+            position: 'none'
+        }
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById('piecharttime'));
+    chart.draw(dataTable, options);
+}
+
+
+function renderTimeData(days) {
+    //chrome.storage.local.get(['siteTimes'], function(result) {
+        // console.log(result);
+        //var siteTimes = result.siteTimes;
+        var aggregatedSiteTimes = new Object();
+        var millisInADay = 24 * 60 * 60 * 1000;
+        var startTime =  Date.now() - (millisInADay * days);
+        for(var site in siteTimes) {
+            if(siteTimes[site].startTime >= startTime) {
+                var link = document.createElement("a");
+                link.href = site;
+                var hostname = link.hostname;
+                // Don't include the chrome extension site
+                if(hostname !== 'ibmlgogdggpaemlifbkhljggmimabcgi') {
+                    if(aggregatedSiteTimes[hostname]) {
+                        aggregatedSiteTimes[hostname] += siteTimes[site].duration;
+                    } else {
+                        aggregatedSiteTimes[hostname] = siteTimes[site].duration;
+                    }
+                }
+            }
+        }
+
+        var orderedSiteTimes = [];
+        for (var time in aggregatedSiteTimes) {
+            if(time) {
+                orderedSiteTimes.push([time, aggregatedSiteTimes[time]]);
+            }
+        }
+        orderedSiteTimes.sort(function(a, b) {
+            return a[1] - b[1];
+        });
+
+        setTimeTableData(orderedSiteTimes);
+        orderedSiteTimes.unshift(['Site', 'Time Spent (Minutes)']);
+        drawTimeChart(orderedSiteTimes);
+    // });
+}
+
+/////////////////////////////////////////////////////////////////////////
 
 document.addEventListener('DOMContentLoaded', function() {
     var oneDay = document.getElementById('one-day');
     oneDay.addEventListener('click', function() {
-        renderData(1);
+        renderVisitData(1);
+        renderTimeData(1);
     });
 
     var oneWeek = document.getElementById('one-week');
     oneWeek.addEventListener('click', function() {
-        renderData(7);
+        renderVisitData(7);
+        renderTimeData(7);
     });
 
     var oneMonth = document.getElementById('one-month');
     oneMonth.addEventListener('click', function() {
-        renderData(30);
+        renderVisitData(30);
+        renderTimeData(30);
     });
 });
 
 function onLoad() {
-    renderData(1);
+    renderVisitData(1);
+    renderTimeData(1);
 }

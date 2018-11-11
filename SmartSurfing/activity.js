@@ -93,6 +93,7 @@ function renderVisitData(days) {
     chrome.history.search({text: '', startTime: startTime, maxResults: 2000}, function(data) {
         processVisitData(data);
     });
+<<<<<<< HEAD
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -216,3 +217,8 @@ function onLoad() {
     renderVisitData(1);
     renderTimeData(1);
 }
+=======
+};
+
+
+>>>>>>> fixing bugs

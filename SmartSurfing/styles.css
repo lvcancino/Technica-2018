@@ -1,0 +1,43 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #312c32;
+}
+
+li {
+    float: left;
+}
+
+li button {
+    display: block;
+    background-color: #daad86;
+    color: #312c32;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li button:hover {
+    background-color: #f3e5d8;
+}
+
+li button:focus {
+   background-color: #f3e5d8;
+}
+
+.centered {
+        margin: auto;
+        width: 60%;
+        padding: 10px;
+}
+
+h1 {
+    color: #312c32 !important
+}
+
+h3 {
+    color: #5d545f
+}

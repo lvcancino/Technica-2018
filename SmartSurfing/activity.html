@@ -12,55 +12,45 @@
 
 	<!-- Google Font API -->
 	<link href="https://fonts.googleapis.com/css?family=Cutive+Mono" rel="stylesheet">
-
+    <script src="../d3/d3.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="activity.js"></script>
     <title>Smart Surfing</title>
 	</head>
-	<body style="background-color:lightskyblue;">
-		<div class="container" style="background-color:whitesmoke;">
+	<body style="background-color:#98dafc;">
+		<div class="container" style="background-color:#feffff;">
 			<div class="jumbotron">
-				<h1 class="display-4 typewriter-animation"><b>=> Welcome Smart Surfer!</b></h1>
-				<p>What have you been browsing lately?</p>
-				<hr class="my-4">
-				<br>
-				<div class="row">
-					<div class="col-md-2">
-						<ul class="nav flex-column">
-							<li class="nav-item">
-								<a class="nav-link active" href="#">Link 1</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Link 2</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="#">Link 3</a>
-							</li>
-						</ul>
+                <div class="container header-block">
+				    <h1 class="display-4 typewriter-animation"><b>=> Welcome Smart Surfer!</b></h1>
+				    <h3 class="centered">What have you been browsing lately?</h3>
+				    <hr class="my-4">
+				</div>
+                <div class="row">
+                    <ul class="nav centered" style="width: 41.5%">
+                        <li class="nav-item">
+                            <button autofocus type="button" class="nav-link active" id="one-day">Past Day</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" class="nav-link" id="one-week">Past Week</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="one-month">Past Month</button>
+                        </li>
+                    </ul>
+                </div>
+				<div class="row" style="padding-top: 20px">
+					<div class="col-md-6">
+						<div id="piechart"></div>
 					</div>
-					<div class="col-md-5">
-						<figure class="figure">
-							<img src=".../400x300" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-							<figcaption class="figure-caption">A caption for the above image.</figcaption>
-						</figure>
-					</div>
-					<div class="col-md-5">
+					<div class="col-md-6">
+                        <h3 align="center">Ten Most Visited Sites</h3>
 						<table class="table">
-							<thead>
-								<tr>
-									<th scope="col">#</th>
-									<th scope="col">First</th>
-									<th scope="col">Last</th>
-									<th scope="col">Handle</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">1</th>
-									<td>Mark</td>
-									<td>Otto</td>
-									<td>@mdo</td>
-								</tr>
-							</tbody>
-						</table>
+                            <tr>
+                                <th>Web Site</th>
+                                <th>Number of Visits</th>
+                            </tr>
+                            <tbody id="siteVisits"></tbody>
+                        </table>
 					</div>
 				</div>
 			</div>

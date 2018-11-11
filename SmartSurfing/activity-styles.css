@@ -26,9 +26,9 @@ body {
 	border-right: .15em solid #312c32;
 	white-space: nowrap;
 	margin: 0 auto;
-	letter-spacing: .15em;
+	letter-spacing: .1em;
 	animation:
-		typing 4s steps(40, end),
+		typing 4s steps(44, end),
 		cursor 1.25s step-end infinite
 }
 
@@ -58,7 +58,7 @@ li {
     float: left;
 }
 
-li button {
+button {
     display: block;
     background-color: #daad86;
     color: #312c32;
@@ -68,11 +68,11 @@ li button {
 }
 
 /* Change the link color to #111 (black) on hover */
-li button:hover {
+button:hover {
     background-color: #f3e5d8;
 }
 
-li button:focus {
+button:focus {
    background-color: #f3e5d8;
 }
 
